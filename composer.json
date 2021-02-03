@@ -1,22 +1,22 @@
 {
-    "name": ":vendor_name/:package_name",
-    "description": ":package_description",
+    "name": "stephenmudere/mobipaid",
+    "description": "Multivendor laravel wrapper for mobipaid",
     "keywords": [
-        ":vendor_name",
-        ":package_name"
+        "stephenmudere",
+        "mobipaid"
     ],
-    "homepage": "https://github.com/:vendor_name/:package_name",
+    "homepage": "https://github.com/stephenmudere/mobipaid",
     "license": "MIT",
     "authors": [
         {
-            "name": ":author_name",
-            "email": ":author_email",
+            "name": "Stephen Mudere",
+            "email": "stephenmudere@gmail.com",
             "role": "Developer"
         }
     ],
     "require": {
-        "php": "^7.4|^8.0",
-        "spatie/laravel-package-tools": "^1.1",
+        "php": "^7.0|^8.0",
+        "spatie/laravel-package-tools": "^1.0",
         "illuminate/contracts": "^8.0"
     },
     "require-dev": {
@@ -26,13 +26,13 @@
     },
     "autoload": {
         "psr-4": {
-            "Spatie\\Skeleton\\": "src",
-            "Spatie\\Skeleton\\Database\\Factories\\": "database/factories"
+            "Stephenmudere\\Mobipaid\\": "src",
+            "Stephenmudere\\Mobipaid\\Database\\Factories\\": "database/factories"
         }
     },
     "autoload-dev": {
         "psr-4": {
-            "Spatie\\Skeleton\\Tests\\": "tests"
+            "Stephenmudere\\Mobipaid\\Tests\\": "tests"
         }
     },
     "scripts": {
@@ -46,10 +46,10 @@
     "extra": {
         "laravel": {
             "providers": [
-                "Spatie\\Skeleton\\SkeletonServiceProvider"
+                "Stephenmudere\\Mobipaid\\MobipaidServiceProvider"
             ],
             "aliases": {
-                "Skeleton": "Spatie\\Skeleton\\SkeletonFacade"
+                "Mobipaid": "Stephenmudere\\Mobipaid\\MobipaidFacade"
             }
         }
     },

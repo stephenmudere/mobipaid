@@ -1,6 +1,6 @@
 <?php
 
-namespace Spatie\Skeleton\Tests;
+namespace Stephenmudere\Mobipaid\Tests;
 
 class ExampleTest extends TestCase
 {
