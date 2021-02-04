@@ -2,8 +2,8 @@
 
 namespace Stephenmudere\Mobipaid;
 
-use Spatie\LaravelPackageTools\Package;
-use Spatie\LaravelPackageTools\PackageServiceProvider;
+use Stephenmudere\LaravelPackageTools\Package;
+use Stephenmudere\LaravelPackageTools\PackageServiceProvider;
 use Stephenmudere\Mobipaid\Commands\MobipaidCommand;
 
 class MobipaidServiceProvider extends PackageServiceProvider
@@ -17,6 +17,7 @@ class MobipaidServiceProvider extends PackageServiceProvider
          */
         $package
             ->name('mobipaid')
+            ->namespace('\\Stephenmudere\\Mobipaid\\')
             ->hasConfigFile()
             ->hasViews()
             ->hasMigration('create_mobipaid_table')

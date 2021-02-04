@@ -11,6 +11,6 @@ class MobipaidFacade extends Facade
 {
     protected static function getFacadeAccessor()
     {
-        return 'mobipaid';
+        return 'Mobipaid';
     }
 }
