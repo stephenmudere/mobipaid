@@ -4,6 +4,7 @@ namespace Stephenmudere\Mobipaid;
 
 use \Stephenmudere\Mobipaid\Models\MobipaidWallet;
 use \Stephenmudere\Mobipaid\RestClient;
+use \Stephenmudere\Mobipaid\ZaPayu;
 
 class Mobipaid
 {
@@ -73,5 +74,36 @@ class Mobipaid
         	
         }
         return $restclient->payment_requests($data);
+	}
+
+	public function verify_card($data){
+		$required_fields=[
+			'merchantReference',
+			'description',
+			//'currencyCode',
+			'amountInCents',
+			'merchantUserId',
+			'email',
+			'firstName',
+			'lastName',
+			'mobile',
+			'regionalId',
+			'countryCode',
+			'nameOnCard',
+			'cardNumber',
+			'cardExpiry',
+			'cvv'
+		 ];
+		$senddata=[];
+		//dd($data);
+		foreach ($required_fields as $key => $value) {
+			if (!array_key_exists($value, $data)) {
+				return ['code'=>403,'message'=>'Required key '.$value.' not found'];
+			}else{
+				$senddata[$value]=$data[$value];
+			}
+		}
+		$zapayu=new ZaPayu();
+		return $zapayu->verify_card($senddata);
 	}
 }
