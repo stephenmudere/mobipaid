@@ -30,10 +30,9 @@ class RestClient
     {
         $this->client = new \GuzzleHttp\Client;
         //$this->apiId = $apiId;
-        $this->apiToken = $details->mode=='test'?$details->test_key:$details->live_key;
-        $this->baseRestUri = $details->mode=='test'?"https://test.mobipaid.io/v2/":"https://live.mobipaid.io/v2/";
+        $this->apiToken = $details->mode == 'test'?$details->test_key:$details->live_key;
+        $this->baseRestUri = $details->mode == 'test'?"https://test.mobipaid.io/v2/":"https://live.mobipaid.io/v2/";
     }
-
     
     /**
      * Submit a Payment Request
@@ -44,20 +43,20 @@ class RestClient
      */
     public function payment_requests(array $options) : array
     {
-        $data=$this->curl_test($options,'payment_requests',static::HTTP_POST);
+        $data = $this->curl_test($options, 'payment_requests', static::HTTP_POST);
         dd($data);
         dd([
             'json' => $options,
             'http_errors' => true,
-            'headers' => ['Authorization' => 'Bearer ' . $this->apiToken]
+            'headers' => ['Authorization' => 'Bearer ' . $this->apiToken],
         ]);
         $response = $this->client->request(static::HTTP_POST, $this->baseRestUri . 'payment_requests', [
             'json' => $options,
             'http_errors' => true,
-            'headers' => ['Authorization' => 'Bearer ' . $this->apiToken]
+            'headers' => ['Authorization' => 'Bearer ' . $this->apiToken],
         ]);
 
-        return ( $this->getResponse((string) $response->getBody()));
+        return ($this->getResponse((string) $response->getBody()));
     }
 
     /**
@@ -67,13 +66,14 @@ class RestClient
      * @param array $options
      * @return array
      */
-    public function sendToGroup(array $options) : array 
+    public function sendToGroup(array $options) : array
     {
         $response = $this->client->request(static::HTTP_POST, $this->baseRestUri . 'GroupMessages', [
             'json' => $options,
             'http_errors' => false,
-            'headers' => ['Authorization' => 'Bearer ' . $this->apiToken]
+            'headers' => ['Authorization' => 'Bearer ' . $this->apiToken],
         ]);
+
         return $this->getResponse((string) $response->getBody());
     }
 
@@ -87,9 +87,10 @@ class RestClient
     {
         $response = $this->client->request(static::HTTP_GET, $this->baseRestUri . 'Balance', [
             'http_errors' => false,
-            'headers' => ['Authorization' => 'Bearer ' . $this->apiToken]
+            'headers' => ['Authorization' => 'Bearer ' . $this->apiToken],
         ]);
         $responseData = $this->getResponse((string) $response->getBody());
+
         return $responseData['balance'];
     }
 
@@ -104,10 +105,10 @@ class RestClient
         return json_decode($responseBody, true);
     }
 
-    public function curl_test(array $options,string $link,string $verb) : array
-     {  //dd($this->apiToken);
+    public function curl_test(array $options, string $link, string $verb) : array
+    {  //dd($this->apiToken);
 
-        $options = array(
+        $options = [
     "request_methods" => [ "SMS"],
     "reference_number" => "123",
     "email" => "example@example.com",
@@ -116,10 +117,10 @@ class RestClient
     "customer_id" => "",
     "customer_salutation" => "Mr",
     "customer_first_name" => "John",
-    "customer_last_name"  => "Preston",
-    "redirect_url"  => "https://mobipaid.com",
-    "response_url"  => "https://mobipaid.com",
-    "cancel_url"  => "https://mobipaid.com",
+    "customer_last_name" => "Preston",
+    "redirect_url" => "https://mobipaid.com",
+    "response_url" => "https://mobipaid.com",
+    "cancel_url" => "https://mobipaid.com",
     "fixed_amount" => true,
     "currency" => "ZAR",
     "amount" => 1500.12,
@@ -132,22 +133,22 @@ class RestClient
     "invoice_url" => "https://mp-fixed-assets.s3.amazonaws.com/logo.png",
     "attach_receipt" => true,
     "receipt_file_type" => "pdf",
-    "payment_type"=>"DB",
+    "payment_type" => "DB",
     "payment_methods" => [
         "APPLE_PAY",
         "GOOGLE_PAY",
         "NEDBANK_EFT",
-        "AMEX"
+        "AMEX",
     ],
-    "expiry_date" => ""
-);
-       $auth= array(
+    "expiry_date" => "",
+];
+        $auth = [
         "Content-Type: application/json",
         "Authorization: Bearer mp_test_Rq6u5lvySttUiYeCtf2Y",//.$this->apiToken
-        );
-       //dd("{$this->baseRestUri}{$link}");
-       $curl = \curl_init();
-        \curl_setopt_array($curl, array(
+        ];
+        //dd("{$this->baseRestUri}{$link}");
+        $curl = \curl_init();
+        \curl_setopt_array($curl, [
         CURLOPT_URL => "{$this->baseRestUri}/{$link}",
         CURLOPT_RETURNTRANSFER => true,
         CURLOPT_ENCODING => "",
@@ -158,12 +159,12 @@ class RestClient
         CURLOPT_CUSTOMREQUEST => "{$verb}",
         CURLOPT_POSTFIELDS => json_encode($options),
         CURLOPT_HTTPHEADER => $auth,
-        ));
+        ]);
 
         $response = \curl_exec($curl);
         dd($response);
         \curl_close($curl);
-        return $this->getResponse($response);
 
+        return $this->getResponse($response);
     }
 }
