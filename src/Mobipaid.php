@@ -4,25 +4,21 @@ namespace Stephenmudere\Mobipaid;
 
 use \Stephenmudere\Mobipaid\Models\MobipaidWallet;
 use \Stephenmudere\Mobipaid\Models\PaymentRequest;
-use \Stephenmudere\Mobipaid\RestClient;
-use \Stephenmudere\Mobipaid\ZaPayu;
 use Log;
-use Notification;
-use App\Notifications\SendSOS;
-use App\Admin\Library\PhoneNumber;
 
 class Mobipaid
 {
     //saves or updates exiting wallet details
-	public function attach_wallet($wallet_details){
+    public function attach_wallet($wallet_details)
+    {
         try {
             $exising_wallet = MobipaidWallet::where('user_id', $wallet_details['user_id'])->first();
             if (isset($exising_wallet->id)) {
-        	
             } else {
                 $exising_wallet = new MobipaidWallet;
             }
             $exising_wallet->fill($wallet_details);
+
             return $exising_wallet->save();
         } catch (\Illuminate\Database\QueryException $ex) {
             //dd($ex->getMessage());
@@ -33,8 +29,8 @@ class Mobipaid
         }
     }
 
-
-	public function payment_request($params){
+    public function payment_request($params)
+    {
         try {
             $valid_fields = [
             //'request_methods',
@@ -74,7 +70,6 @@ class Mobipaid
                 if (! array_key_exists($value, $params) || isset($params[$value]) && $params[$value] == "") {
                     return ['code' => 403,'message' => 'Required key '.$value.' not found please refere to documantation here https://docs.mobipaid.com/'];
                 }
-            
             }
             $exising_wallet = MobipaidWallet::where('user_id', $params['user_id'])->first();
 
@@ -83,7 +78,7 @@ class Mobipaid
             }
             $restclient = new RestClient($exising_wallet);
             // take request methods from .env or the db as per driver perferences
-        $data = array(
+            $data = [
             "request_methods" => config('mobipaid.request_methods'),
             "reference_number" => $params['reference_number'],
             "email" => isset($params['email']) && $params['email'] != ""?$params['email']:"example@example.com",
@@ -110,8 +105,8 @@ class Mobipaid
             "receipt_file_type" => config('mobipaid.receipt_file_type'),
             "payment_type" => config('mobipaid.payment_type'),
             "payment_methods" => config('mobipaid.payment_methods'),
-            "expiry_date" => ""
-        );
+            "expiry_date" => "",
+        ];
             //dd($data);
             $return_info = $restclient->payment_requests($data);
             if (isset($return_info['result']) && 'success' == $return_info['result']) {
@@ -123,10 +118,9 @@ class Mobipaid
                 $prequest['transaction_id'] = $return_info['transaction_id'];
                 //dd($prequest);
                 $payment_request = PaymentRequest::create($prequest);
+            }
 
-        }
             return $return_info;
-
         } catch (\Illuminate\Database\QueryException $ex) {
             //dd($ex->getMessage());
             // Note any method of class PDOException can be called on $ex.
@@ -136,7 +130,8 @@ class Mobipaid
         }
     }
 
-	public function verify_card($data){
+    public function verify_card($data)
+    {
         try {
             $required_fields = [
             'merchantReference',
@@ -153,7 +148,7 @@ class Mobipaid
             'nameOnCard',
             'cardNumber',
             'cardExpiry',
-			'cvv'
+            'cvv',
          ];
             $senddata = [];
             //dd($data);
@@ -178,10 +173,11 @@ class Mobipaid
         }
     }
 
-    public function card_result($data){
+    public function card_result($data)
+    {
         try {
             $required_fields = [
-            'PayUReference'
+            'PayUReference',
          ];
             $senddata = [];
             //dd($data);

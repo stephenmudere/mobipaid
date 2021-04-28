@@ -34,7 +34,6 @@ class RestClient
         $this->baseRestUri = $details->mode == 'test'?"https://test.mobipaid.io/v2/":"https://live.mobipaid.io/v2/";
     }
     
-    
     /**
      * Submit a Payment Request
      *
@@ -44,11 +43,10 @@ class RestClient
      */
     public function payment_requests(array $options) : array
     {
-
         $response = $this->client->request(static::HTTP_POST, $this->baseRestUri . 'payment-requests', [
             'json' => $options,
             'http_errors' => false,
-            'headers' => ['Authorization' => 'Bearer ' . $this->apiToken]
+            'headers' => ['Authorization' => 'Bearer ' . $this->apiToken],
         ]);
 
         return ($this->getResponse((string) $response->getBody()));
@@ -64,6 +62,4 @@ class RestClient
     {
         return json_decode($responseBody, true);
     }
-
-    
 }
