@@ -91,7 +91,7 @@ class ZaPayu
             $returnData = json_decode(json_encode($soapCallResult), true);
 
             return $returnData;
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             //var_dump($e);
             //die();
             return ['error' => 1,'message' => $e->getMessage()];
@@ -143,7 +143,7 @@ class ZaPayu
             $return = json_decode(json_encode($soapCallResult), true);
 
             return $return;
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             var_dump($e);
         }
     }
